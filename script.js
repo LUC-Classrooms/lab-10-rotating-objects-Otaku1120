@@ -14,7 +14,7 @@ function setup() {
   obj1 = new myClass(width * 1/4, height/2); 
   obj2 = new myClass(width * 3/4, height/2);
 
-  console.log("obj1 contents:");
+  console.log("obj1 contents:");//sends messahe to consule
   console.log(obj1); // look at the console to see the contents of obj1
   console.log("obj2 contents:");
   console.log(obj2);
@@ -24,30 +24,32 @@ function draw() {
   background(200);
   
   obj1.display(); // show the objects on screen
-  obj2.display();
+  obj2.display();//display is the method to call it
   
   // capture the distance of the mouse from each object
-  let mouse1 = dist(mouseX, mouseY, obj1.x, obj1.y); 
+  let mouse1 = dist(mouseX, mouseY, obj1.x, obj1.y);// checking the thistance 
   let mouse2 = dist(mouseX, mouseY, obj2.x, obj2.y); 
 
   if(mouse1 < 50) { // first, see if the mouse is within range
     if(mouseIsPressed){
+      obj1.spin();
       // spin object 1 by calling its spin() method
       // you will have to create that method inside the myClass constructor ...
     } else {
-      obj1.reset(); // the reset function is done for you
+      obj1.reset(); // the reset function is done for you when you let go of the mouse
     }
   }
   if(mouse2 < 50) {
     if(mouseIsPressed){
       // spin object 2 by calling its spin() method
+      obj2.spin();
     } else {
       obj2.reset();
     }
   }
 }
 
-function myClass(tempX, tempY){
+function myClass(tempX, tempY){// gernate object and bottom are variables that belong to this class
 
   //object properties
   this.x = tempX; // assign the first arg to this.x
@@ -64,8 +66,12 @@ function myClass(tempX, tempY){
   Create a spin method here. Look at the reset() method below and the spin() method from the Sakai example for this week.
   the function assigned to this.spin should take a number argument; that number should be _added_ to the value of this.angle. The reset() method sets this.angle back to 0, and this.scale back to 1
   */
-  
-  this.reset = function(){
+  this.spin=function(){
+    this.angle += .02;
+    this.scale *= 0.99;
+  }
+
+  this.reset = function(){// takes angke and change it to zero resting
       this.angle = 0;
       this.scale = 1;
   }
@@ -78,12 +84,15 @@ function myClass(tempX, tempY){
   
   The argument to rotate() should be "this.angle", which is affected by the spin() and reset() methods
 */
-    
+    push();
+    translate(this.x, this.y);
+    rotate(this.angle);
+    scale(this.scale);
     fill(this.color);
     rectMode(CENTER);
     // change the location to 0, 0
-    rect(this.x, this.y, this.diam, this.diam);
-    
+    rect(0, 0, this.diam, this.diam);
+    pop();
   }
   
 }
